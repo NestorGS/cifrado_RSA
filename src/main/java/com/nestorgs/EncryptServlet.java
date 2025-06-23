@@ -1,26 +1,30 @@
 package com.nestorgs;
+
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.math.BigInteger;
 
 public class EncryptServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         String mensaje = request.getParameter("mensaje");
 
-        // Asegúrate de que esto haga el cálculo correctamente
-        // P, Q, N, E, D, mensajeCifrado
-        // Lógica RSA simplificada
+        // — RSA MUY simplificado (solo demostración) —
+        BigInteger p  = new BigInteger("11");
+        BigInteger q  = new BigInteger("13");
+        BigInteger n  = p.multiply(q);                         // n = 143
+        BigInteger fi = p.subtract(BigInteger.ONE)
+                         .multiply(q.subtract(BigInteger.ONE)); // φ = 120
+        BigInteger e  = new BigInteger("7");                   // e = 7
+        BigInteger d  = e.modInverse(fi);                      // d = 103
+        BigInteger m  = new BigInteger(mensaje.getBytes());    // mensaje → número
+        BigInteger c  = m.modPow(e, n);                        // cifrado
 
-        BigInteger p = new BigInteger("11");
-        BigInteger q = new BigInteger("13");
-        BigInteger n = p.multiply(q);
-        BigInteger fi = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
-        BigInteger e = new BigInteger("7");
-        BigInteger d = e.modInverse(fi);
-        BigInteger m = new BigInteger(mensaje.getBytes());
-        BigInteger c = m.modPow(e, n);
-
+        // Datos hacia resultado.jsp
         request.setAttribute("mensajeCifrado", c.toString());
         request.setAttribute("e", e.toString());
         request.setAttribute("n", n.toString());
