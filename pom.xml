@@ -4,7 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <!-- === Datos básicos del proyecto === -->
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.nestorgs</groupId>
   <artifactId>cifradoRSA</artifactId>
@@ -12,17 +11,13 @@
   <packaging>war</packaging>
   <name>RSAApp</name>
 
-  <!-- === Propiedades de compilación === -->
   <properties>
-    <!-- Java 17 es la versión free en Render -->
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <!-- === Dependencias === -->
   <dependencies>
-    <!-- Servlet 5.0 (Jakarta) – scope provided porque Tomcat lo provee en runtime -->
     <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
@@ -31,13 +26,11 @@
     </dependency>
   </dependencies>
 
-  <!-- === Configuración de compilación y empaquetado === -->
   <build>
-    <!-- Nombre final del WAR -->
     <finalName>RSAApp</finalName>
 
     <plugins>
-      <!-- Compilador: usa release 17 -->
+      <!-- Compilador -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -47,7 +40,17 @@
         </configuration>
       </plugin>
 
-      <!-- Copia webapp-runner.jar para arrancar el WAR en Render -->
+      <!-- Plugin para WAR desde WebContent -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.3.2</version>
+        <configuration>
+          <warSourceDirectory>WebContent</warSourceDirectory>
+        </configuration>
+      </plugin>
+
+      <!-- webapp-runner -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
